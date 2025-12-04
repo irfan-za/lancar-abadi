@@ -26,7 +26,7 @@ lancar-abadi/
 │   └── globals.css          # Global styles with Tailwind
 ├── public/
 └── lib/
-    └── utils.ts             # Utility functions (cn helper)
+    └── utils.ts             # Utility functions
 ```
 
 ## 🛠️ Setup & Installation

@@ -29,9 +29,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     images: `${process.env.NEXT_PUBLIC_DOMAIN}/images/meta-image.jpg`,
-  },
-  verification: { google: "pHrfyuLWOr9KbVZNQaINXFQGHiEEGy79ZjSRRAJ4X5E" },
-};
+  }};
 
 export default function RootLayout({
   children,

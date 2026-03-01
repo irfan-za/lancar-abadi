@@ -14,7 +14,7 @@ export default function CTA() {
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
-            href="https://wa.me/6281329226469"
+            href={`${process.env.NEXT_PUBLIC_WHATSAPP_URL}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-lg bg-background px-6 py-3 text-base font-semibold text-foreground shadow-sm transition-all hover:bg-background/90 hover:shadow-md"

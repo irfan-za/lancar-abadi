@@ -2,20 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-interface ProductCardProps {
-  slug: string;
-  title: string;
-  description: string;
-  image: string;
-}
+import { OfflineProduct } from "@/types/product";
 
 export default function ProductCard({
   slug,
   title,
-  description,
-  image,
-}: ProductCardProps) {
+  descriptions,
+  image_urls,
+}: OfflineProduct) {
   return (
     <Link
       href={`/products/${slug}`}
@@ -23,7 +17,7 @@ export default function ProductCard({
     >
       <div className="relative aspect-square bg-muted">
         <Image
-          src={image}
+          src={image_urls?.[0] || "/images/meta-image.jpg"}
           alt={title}
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -35,7 +29,7 @@ export default function ProductCard({
           {title}
         </h3>
         <p className="mb-4 line-clamp-2 flex-1 text-sm text-muted-foreground">
-          {description}
+          {descriptions?.join(" ")}
         </p>
 
         <Button className="flex items-center gap-1 text-sm font-medium text-primary-foreground transition-colors group-hover:gap-2">

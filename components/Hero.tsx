@@ -25,7 +25,7 @@ export default function Hero() {
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
-              href="https://wa.me/6281329226469"
+              href={`${process.env.NEXT_PUBLIC_WHATSAPP_URL}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 py-3 text-base font-semibold text-foreground shadow-sm transition-all hover:bg-accent hover:shadow-md"
@@ -51,7 +51,7 @@ export default function Hero() {
               </div>
             </div>
             <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
-              <div className="mb-2 text-3xl font-bold text-primary">100%</div>
+              <div className="mb-2 text-3xl font-bold text-primary">88%</div>
               <div className="text-sm font-medium text-muted-foreground">
                 Kepuasan Pelanggan
               </div>

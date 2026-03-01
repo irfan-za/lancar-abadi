@@ -2,19 +2,20 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Phone, Package } from "lucide-react";
-import { products } from "@/constants";
+import { ArrowLeft, Phone } from "lucide-react";
+import { marketplaces, socialMedia } from "@/constants";
+import { getProductBySlug } from "@/lib/supabase/products";
+import ImageCarousel from "@/components/ImageCarousel";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
 }
 
-// Generate metadata for each product
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = products.find((p) => p.slug === slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     return {
@@ -24,17 +25,17 @@ export async function generateMetadata({
 
   return {
     title: `${product.title} - Lancar Abadi`,
-    description: product.description,
+    description: product.descriptions?.join(" ") ?? "",
     keywords: [product.title, "lancar abadi", "toko listrik", "alat tukang"],
     openGraph: {
-      images: [product.image],
+      images: product.image_urls?.[0] ? [product.image_urls[0]] : [],
     },
   };
 }
 
 export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = products.find((p) => p.slug === slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
@@ -43,7 +44,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   const whatsappMessage = encodeURIComponent(
     `Halo, saya tertarik dengan produk: ${product.title}\n\nBisa info lebih lanjut mengenai stok dan harganya?`
   );
-  const whatsappUrl = `https://wa.me/6281329226469?text=${whatsappMessage}`;
+  const whatsappUrl = `${process.env.NEXT_PUBLIC_WHATSAPP_URL}?text=${whatsappMessage}`;
 
   return (
     <div className="min-h-screen bg-background py-8 sm:py-12">
@@ -57,15 +58,10 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         </Link>
 
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
-          <div className="relative aspect-square overflow-hidden rounded-lg border border-border bg-muted shadow-lg">
-            <Image
-              src={product.image}
-              alt={product.title}
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
+          <ImageCarousel
+            images={product.image_urls ?? []}
+            alt={product.title}
+          />
 
           <div className="flex flex-col space-y-6">
             <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -75,9 +71,20 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
               <h2 className="text-lg font-semibold text-foreground">
                 Deskripsi Produk
               </h2>
-              <p className="text-base leading-7 text-muted-foreground">
-                {product.description}
-              </p>
+              {product.descriptions && product.descriptions.length > 0 ? (
+                <ul className="space-y-2 text-base leading-7 text-muted-foreground">
+                  {product.descriptions.map((desc, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                      <span>{desc}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-base leading-7 text-muted-foreground">
+                  Tidak ada deskripsi tersedia.
+                </p>
+              )}
             </div>
 
             <div className="flex flex-col gap-3 pt-4">
@@ -90,13 +97,44 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                 <Phone className="h-5 w-5" />
                 Pesan via WhatsApp
               </a>
-              <Link
-                href="/products"
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 py-3 text-base font-semibold text-foreground shadow-sm transition-all hover:bg-accent hover:shadow-md"
-              >
-                <Package className="h-5 w-5" />
-                Lihat Produk Lainnya
-              </Link>
+      
+            </div>
+
+            <div className="pt-6 mt-2 border-t border-border">
+              <p className="font-semibold text-foreground mb-4 text-sm uppercase tracking-wider">
+                Bisa dibeli di :
+              </p>
+              <div className="flex flex-wrap gap-4">
+                {marketplaces.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-12 w-12 items-center justify-center"
+                    title={item.name}
+                  >
+                    <Image src={item.image} alt={item.alt} width={24} height={24} className="h-full w-full object-contain" />
+                  </Link>
+                ))}
+              </div>
+              <p className="font-semibold text-foreground mb-4 text-sm uppercase tracking-wider mt-4">
+                Sosial media :
+              </p>
+              <div className="flex flex-wrap gap-4">
+                {socialMedia.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-background p-2.5 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md hover:border-primary/50"
+                    title={item.name}
+                  >
+                    <Image src={item.image} alt={item.alt} width={24} height={24} className="h-full w-full object-contain" />
+                  </Link>
+                ))}
+              </div>
             </div>
 
             <div className="rounded-lg border border-border bg-muted/40 p-4 text-sm text-muted-foreground">

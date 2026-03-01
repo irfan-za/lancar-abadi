@@ -1,10 +1,10 @@
 import ProductGrid from "./ProductGrid";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { products } from "@/constants";
+import { getFeaturedProducts } from "@/lib/supabase/products";
 
-export default function FeaturedProduct() {
-  const featuredProducts = products.slice(0, 8);
+export default async function FeaturedProduct() {
+  const featuredProducts = await getFeaturedProducts(8);
 
   return (
     <section className="bg-muted/40 py-16 sm:py-24">

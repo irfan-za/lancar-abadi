@@ -27,12 +27,12 @@ export default function Footer() {
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 shrink-0 text-primary" />
                 <a
-                  href="https://wa.me/6281329226469"
+                  href={`${process.env.NEXT_PUBLIC_WHATSAPP_URL}`}
                   className="text-muted-foreground hover:text-foreground"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  +62 813-2922-6469
+                  {process.env.NEXT_PUBLIC_WHATSAPP_URL?.split("/").pop()}
                 </a>
               </div>
               <div className="flex items-center gap-2">

@@ -40,7 +40,7 @@ export default function Navbar() {
             Kontak
           </Link>
           <Link
-            href="https://wa.me/6281329226469"
+            href={`${process.env.NEXT_PUBLIC_WHATSAPP_URL}`}
             target="_blank"
             rel="noopener noreferrer"
             className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
@@ -91,7 +91,7 @@ export default function Navbar() {
             Kontak
           </Link>
           <Link
-            href="https://wa.me/6281329226469"
+            href={`${process.env.NEXT_PUBLIC_WHATSAPP_URL}`}
             target="_blank"
             rel="noopener noreferrer"
             className="block rounded-lg bg-primary px-3 py-2 text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90"
